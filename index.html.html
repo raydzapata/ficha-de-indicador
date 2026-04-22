@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha del Indicador — Ministerio de Educación</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F1EC;
+    --surface: #FFFFFF;
+    --primary: #B03A2E;
+    --primary-dark: #7B241C;
+    --accent: #1C2833;
+    --muted: #717D7E;
+    --border: #DDD8CF;
+    --warning-bg: #FFFBF0;
+    --warning-border: #D4AC0D;
+    --input-bg: #FDFCFA;
+    --success: #1E8449;
+    --info: #2471A3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--accent);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--accent);
+    color: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-escudo {
+    width: 44px;
+    height: 44px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .header-title { font-family: 'Lora', serif; }
+  .header-title .inst {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .header-title .main {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .header-progress {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .progress-pct {
+    font-family: 'Lora', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .progress-label { font-size: 10px; opacity: 0.5; margin-top: 2px; }
+  .progress-bar-wrap {
+    width: 140px;
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    margin-top: 6px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* LAYOUT */
+  .layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 20px;
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    position: sticky;
+    top: 88px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .sidebar-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-btn {
+    width: 100%;
+    text-align: left;
+    padding: 10px 13px;
+    border-radius: 9px;
+    border: none;
+    margin-bottom: 4px;
+    cursor: pointer;
+    background: transparent;
+    color: var(--accent);
+    font-size: 13px;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+  .nav-btn:hover { background: #F0EDE8; }
+  .nav-btn.active {
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+  }
+  .nav-btn .nav-count {
+    font-size: 11px;
+    opacity: 0.65;
+    display: block;
+    margin-top: 2px;
+  }
+  .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+  .eval-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 9px;
+    border: 2px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+  .eval-btn:hover:not(:disabled) {
+    background: var(--primary);
+    color: white;
+  }
+  .eval-btn:disabled {
+    border-color: var(--border);
+    color: var(--muted);
+    cursor: default;
+  }
+  .eval-hint { font-size: 11px; color: var(--muted); text-align: center; margin-top: 7px; }
+
+  /* MAIN PANEL */
+  .main-panel {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 32px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .section-header { margin-bottom: 26px; }
+  .section-header h2 {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .section-header p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .section-header p strong { color: var(--warning-border); }
+
+  /* CAMPO */
+  .campo { margin-bottom: 26px; }
+  .campo-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .campo-codigo {
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 58px;
+    font-style: italic;
+  }
+  .campo-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--accent);
+    flex: 1;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 9px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .badge-cerrado { background: #EBF5FB; color: #2471A3; }
+  .badge-condicionado { background: #FEF9E7; color: #B7770D; }
+  .badge-abierto { background: #EAFAF1; color: #1A7741; }
+
+  .campo-input-row { display: flex; gap: 10px; align-items: flex-start; }
+  select, textarea, input[type="text"], input[type="number"], input[type="url"] {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: var(--input-bg);
+    font-size: 14px;
+    color: var(--accent);
+    font-family: 'Source Sans 3', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  select { appearance: none; cursor: pointer; }
+  select:focus, textarea:focus, input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(176,58,46,0.1);
+  }
+  textarea { resize: vertical; line-height: 1.55; }
+
+  .validar-btn {
+    padding: 10px 16px;
+    border-radius: 9px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
+  }
+  .validar-btn:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+  .validar-btn:disabled { background: #DDD; color: #AAA; cursor: default; transform: none; }
+
+  /* VALIDATION PANEL */
+  .validation-panel {
+    margin-top: 10px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border-left: 3px solid var(--warning-border);
+    background: var(--warning-bg);
+    font-size: 13px;
+    line-height: 1.65;
+    animation: slideIn 0.3s ease;
+  }
+  .validation-loading {
+    border-left-color: var(--primary);
+    background: #FDF5F5;
+  }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .validation-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .validation-body { color: #3D3D3D; white-space: pre-wrap; }
+
+  /* GLOBAL EVAL */
+  .global-eval {
+    margin-top: 24px;
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 28px 32px;
+    border: 2px solid var(--primary);
+    box-shadow: 0 4px 20px rgba(176,58,46,0.1);
+    animation: slideIn 0.4s ease;
+  }
+  .global-eval h3 {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    color: var(--primary);
+    margin-bottom: 16px;
+  }
+  .global-eval-body {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--accent);
+    white-space: pre-wrap;
+  }
+
+  /* NAVIGATION */
+  .nav-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+  .nav-prev, .nav-next {
+    padding: 11px 22px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.2s;
+  }
+  .nav-prev {
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--accent);
+  }
+  .nav-prev:hover:not(:disabled) { background: #F0EDE8; }
+  .nav-prev:disabled { opacity: 0.35; cursor: default; }
+  .nav-next {
+    border: none;
+    background: var(--primary);
+    color: white;
+  }
+  .nav-next:hover:not(:disabled) { background: var(--primary-dark); }
+  .nav-next:disabled { background: var(--border); color: var(--muted); cursor: default; }
+
+  /* SPINNER */
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .spinner { display: inline-block; animation: spin 1s linear infinite; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #CCC; border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .header-inner { padding: 12px 16px; }
+    .main-panel { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-escudo">🦅</div>
+      <div class="header-title">
+        <span class="inst">Ministerio de Educación · Unidad de Planificación</span>
+        <span class="main">Ficha del Indicador</span>
+      </div>
+    </div>
+    <div class="header-progress">
+      <div>
+        <div class="progress-pct" id="pct-display">0%</div>
+        <div class="progress-label">completado</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">Secciones</div>
+    <div id="nav-secciones"></div>
+    <hr class="sidebar-divider">
+    <button class="eval-btn" id="eval-global-btn" onclick="evaluarGlobal()" disabled>
+      📊 Evaluación Global
+    </button>
+    <div class="eval-hint" id="eval-hint">Complete al menos 30% para evaluar</div>
+  </aside>
+
+  <main>
+    <div class="main-panel" id="panel-campos"></div>
+    <div id="global-eval-panel"></div>
+  </main>
+</div>
+
+<script>
+const CAMPOS = [
+  { id:"c1",  num:1,  label:"Instrumento de gestión",                      tipo:"cerrado",     entrada:"select",
+    opciones:["Política General de Gobierno","Política Nacional Sectorial","Política Nacional Multisectorial","Política Institucional","Plan Estratégico de Desarrollo Nacional","Plan Estratégico Sectorial Multianual","Plan Estratégico Institucional","Estrategia Nacional","Programa Presupuestal","Plan de Actuación","Cadena de Resultados","Proyecto Educativo Nacional"] },
+  { id:"c2",  num:2,  label:"Elemento Estratégico",                         tipo:"cerrado",     entrada:"select",
+    opciones:["Objetivo","Acción Estratégica","Servicio","Intervención"] },
+  { id:"c3",  num:3,  label:"Nombre del indicador",                         tipo:"condicionado",entrada:"textarea",
+    prompt:"Actúa como un experto en sintaxis funcional. Verifica que la oración redactada sea lógica y formalmente estructurada bajo la siguiente fórmula estricta: [Parámetro (código 25)] + [Sujeto] + [Característica/Estado a transformar]. Considera que el [Sujeto] puede ser un usuario, entidad, entorno o un elemento de gestión. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c4",  num:4,  label:"Justificación",                                tipo:"condicionado",entrada:"textarea",
+    prompt:"Actúa como un experto en monitoreo y evaluación. Verifica que el texto redactado tenga consistencia técnica, pertinencia estratégica y metodológica. Valida la relación lógica entre la definición operacional del indicador (nombre del indicador) y la definición conceptual de aquello que se desea lograr (elemento estratégico). Asegura la lógica formal y analítica. Así como la relevancia del indicador para obtener el elemento estratégico. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c5",  num:5,  label:"Responsable de integración de datos",           tipo:"abierto",     entrada:"text" },
+  { id:"c6",  num:6,  label:"Responsable de logro esperado",                 tipo:"abierto",     entrada:"text" },
+  { id:"c7",  num:7,  label:"Limitación del indicador",                      tipo:"condicionado",entrada:"textarea",
+    prompt:"Actúa como un experto en monitoreo y evaluación. Verifica que en el texto redactado se identifique las limitaciones que presenta el indicador en relación con el elemento que pretende medir. Asegura la lógica formal y analítica, y su relevancia. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c8",  num:8,  label:"Limitaciones para la medición del indicador",   tipo:"condicionado",entrada:"textarea",
+    prompt:"Actúa como un experto en monitoreo y evaluación. Verifica que en el texto redactado se identifique las limitaciones que presenta el indicador en relación a su propia medición, considerando su método de cálculo y el proceso de recolección de datos. Asegura la lógica formal y analítica. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c9",  num:9,  label:"Supuestos",                                     tipo:"condicionado",entrada:"textarea",
+    prompt:"Actúa como un experto en monitoreo y evaluación. Verifica que el texto redactado sea positivo y tenga consistencia técnica. Valida que la condición favorable que se espera que ocurra ayude a que el indicador evolucione. Considera que la condición positiva es externa y no se encuentra bajo control del responsable del logro esperado. Asegura la lógica formal y analítica, la relevancia y probabilidad de ocurrencia del supuesto. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c10", num:10, label:"Fórmula de cálculo",                            tipo:"condicionado",entrada:"textarea",
+    prompt:"Actúa como un experto en estadística. Verifica la correcta formalización de la fórmula matemática que exprese con lógica y consistencia la estructura de cálculo del indicador, considerando el método de cálculo. Verifica que el registro de la fórmula sea precisa y siga los estándares internacionales. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c11", num:11, label:"Método de cálculo",                             tipo:"condicionado",entrada:"textarea",
+    prompt:"Actúa como un experto en estadística. Verifica la correcta redacción, secuencia y lógica en la definición de las variables utilizadas en la fórmula de cálculo y los criterios necesarios para la medición del indicador. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c12", num:12, label:"Proceso de recolección de datos y análisis",    tipo:"condicionado",entrada:"textarea",
+    prompt:"Actúa como un experto en estadística. Verifica la correcta redacción, secuencia y lógica en la identificación, recolección, validación y sistematización de datos para ser utilizados en la medición del indicador. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c13", num:13, label:"Sentido del indicador",                         tipo:"cerrado",     entrada:"select",
+    opciones:["Ascendente","Constante","Descendente","Variable"] },
+  { id:"c14", num:14, label:"Fuente de información",                         tipo:"abierto",     entrada:"textarea" },
+  { id:"c15", num:15, label:"Base de Datos",                                 tipo:"abierto",     entrada:"text" },
+  { id:"c16", num:16, label:"Enlace de base de datos",                       tipo:"condicionado",entrada:"url",
+    prompt:"Actúa como un experto en análisis de calidad de datos. Verifica que el enlace registrado en el campo sea válido y dirija al destino correcto. Evalúa si la URL tiene estructura válida y accesible. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c17", num:17, label:"Nivel de indicador",                            tipo:"cerrado",     entrada:"select",
+    opciones:["Resultado","Producto","Componente","Recurso"] },
+  { id:"c18", num:18, label:"Tipo de indicador",                             tipo:"cerrado",     entrada:"select",
+    opciones:["Cobertura","Calidad","Pertinencia"] },
+  { id:"c19", num:19, label:"Estándar",                                      tipo:"cerrado",     entrada:"select",
+    opciones:["Oportunidad","Accesibilidad","Retención","Continuidad","Igualdad","Inclusión","Eficiencia","Fiabilidad","Desempeño","Eficacia","Percepción"] },
+  { id:"c20", num:20, label:"Periodicidad",                                  tipo:"cerrado",     entrada:"select",
+    opciones:["Trimestral","Semestral","Anual","Bienal","Trienal","Cuatrienal","Quinquenal"] },
+  { id:"c21", num:21, label:"Disponibilidad",                                tipo:"cerrado",     entrada:"select",
+    opciones:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre"] },
+  { id:"c22", num:22, label:"Características del Indicador (% cumplimiento)",tipo:"condicionado",entrada:"text",
+    prompt:"Actúa como un experto en monitoreo y evaluación. Verifica que el indicador cumpla con las características deseables (específico, relevante, medible, realizable y temporal), considerando el proceso de recolección de datos, la base de datos, la periodicidad y la disponibilidad. Registra un porcentaje de cumplimiento con las características deseables del indicador. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c23", num:23, label:"Serie histórica",                               tipo:"abierto",     entrada:"text" },
+  { id:"c24", num:24, label:"Desagregación territorial",                     tipo:"cerrado",     entrada:"select",
+    opciones:["Distrital","Regional","Nacional"] },
+  { id:"c25", num:25, label:"Desagregación de variable",                     tipo:"cerrado",     entrada:"select",
+    opciones:["Sexo","Área","Gestión"] },
+  { id:"c26", num:26, label:"Parámetro",                                     tipo:"cerrado",     entrada:"select",
+    opciones:["Número","Promedio","Ratio","Porcentaje","Tasa","Índice","Variación"] },
+  { id:"c27", num:27, label:"Tipo de valor",                                 tipo:"cerrado",     entrada:"select",
+    opciones:["Histórico","Línea de base","Proyectado","Alcanzado"] },
+  { id:"c28", num:28, label:"Año",                                           tipo:"abierto",     entrada:"number" },
+  { id:"c29", num:29, label:"Valor",                                         tipo:"condicionado",entrada:"text",
+    prompt:"Actúa como un experto en estadística. Verifica el correcto cálculo del valor, considerando el numerador y el denominador. El cálculo debe considerar de manera lógica y rigurosa la fórmula de cálculo, el sentido del indicador y el parámetro. Verifica que el registro de números y unidades de medida sean precisos y sigan los estándares internacionales. Emite observaciones críticas y recomendaciones de mejora, cuando corresponda." },
+  { id:"c30", num:30, label:"Numerador",                                     tipo:"abierto",     entrada:"number" },
+  { id:"c31", num:31, label:"Denominador",                                   tipo:"abierto",     entrada:"number" },
+  { id:"c32", num:32, label:"Norma y fecha de aprobación",                   tipo:"abierto",     entrada:"text" },
+  { id:"c33", num:33, label:"Comentario u observación",                      tipo:"abierto",     entrada:"textarea" },
+];
+
+const SECCIONES = [
+  { titulo:"I. Identificación",            desc:"Datos principales del indicador y sus responsables.", nums:[1,2,3,4,5,6] },
+  { titulo:"II. Metodología",              desc:"Limitaciones, supuestos, fórmulas y procesos de medición.", nums:[7,8,9,10,11,12] },
+  { titulo:"III. Clasificación",           desc:"Clasificación técnica, fuentes y disponibilidad.", nums:[13,14,15,16,17,18,19,20,21] },
+  { titulo:"IV. Calidad y Desagregación",  desc:"Evaluación de calidad y variables de desagregación.", nums:[22,23,24,25,26,27] },
+  { titulo:"V. Datos y Valores",           desc:"Registro de valores numéricos, series históricas y referencias normativas.", nums:[28,29,30,31,32,33] },
+];
+
+let formData = {};
+let validations = {};
+let seccionActiva = 0;
+
+function getCampo(num) { return CAMPOS.find(c => c.num === num); }
+function getValor(id) { return formData[id] || ""; }
+
+function calcProgreso() {
+  const filled = CAMPOS.filter(c => getValor(c.id)).length;
+  return Math.round((filled / CAMPOS.length) * 100);
+}
+
+function updateProgreso() {
+  const p = calcProgreso();
+  document.getElementById("pct-display").textContent = p + "%";
+  document.getElementById("progress-bar").style.width = p + "%";
+  const btn = document.getElementById("eval-global-btn");
+  const hint = document.getElementById("eval-hint");
+  if (p >= 30) {
+    btn.disabled = false;
+    hint.style.display = "none";
+  } else {
+    btn.disabled = true;
+    hint.style.display = "block";
+    hint.textContent = `Complete al menos 30% para evaluar (actual: ${p}%)`;
+  }
+}
+
+function renderNav() {
+  const cont = document.getElementById("nav-secciones");
+  cont.innerHTML = "";
+  SECCIONES.forEach((s, i) => {
+    const campos = s.nums.map(n => getCampo(n)).filter(Boolean);
+    const llenos = campos.filter(c => getValor(c.id)).length;
+    const btn = document.createElement("button");
+    btn.className = "nav-btn" + (i === seccionActiva ? " active" : "");
+    btn.innerHTML = `${s.titulo}<span class="nav-count">${llenos}/${campos.length} campos</span>`;
+    btn.onclick = () => { seccionActiva = i; render(); window.scrollTo(0,0); };
+    cont.appendChild(btn);
+  });
+}
+
+function badgeHTML(tipo) {
+  const map = { cerrado:"badge-cerrado", condicionado:"badge-condicionado", abierto:"badge-abierto" };
+  const lab = { cerrado:"Cerrado", condicionado:"IA Valida", abierto:"Abierto" };
+  return `<span class="badge ${map[tipo]}">${lab[tipo]}</span>`;
+}
+
+function inputHTML(campo) {
+  const val = getValor(campo.id);
+  if (campo.entrada === "select") {
+    const opts = campo.opciones.map(o =>
+      `<option value="${o}" ${val === o ? "selected" : ""}>${o}</option>`
+    ).join("");
+    return `<select id="inp-${campo.id}" onchange="handleChange('${campo.id}', this.value)">
+      <option value="">— Seleccionar —</option>${opts}</select>`;
+  }
+  if (campo.entrada === "textarea") {
+    return `<textarea id="inp-${campo.id}" rows="3" placeholder="Ingrese texto..."
+      oninput="handleChange('${campo.id}', this.value)">${val}</textarea>`;
+  }
+  const type = campo.entrada === "number" ? "number" : campo.entrada === "url" ? "url" : "text";
+  const ph = campo.entrada === "url" ? "https://..." : campo.entrada === "number" ? "Ingrese valor..." : "Ingrese texto...";
+  return `<input type="${type}" id="inp-${campo.id}" value="${val.replace(/"/g,'&quot;')}"
+    placeholder="${ph}" oninput="handleChange('${campo.id}', this.value)">`;
+}
+
+function validationHTML(campo) {
+  const v = validations[campo.id];
+  if (!v) return "";
+  if (v.loading) return `<div class="validation-panel validation-loading">
+    <div class="validation-title"><span class="spinner">⏳</span> Analizando con IA...</div>
+  </div>`;
+  return `<div class="validation-panel">
+    <div class="validation-title">🤖 Análisis IA — ${campo.label}</div>
+    <div class="validation-body">${escapeHtml(v.result)}</div>
+  </div>`;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function campoHTML(campo) {
+  const hasValidar = campo.tipo === "condicionado";
+  const val = getValor(campo.id);
+  return `<div class="campo" id="campo-${campo.id}">
+    <div class="campo-header">
+      <span class="campo-codigo">Código ${campo.num}</span>
+      <span class="campo-label">${campo.label}</span>
+      ${badgeHTML(campo.tipo)}
+    </div>
+    <div class="campo-input-row">
+      <div style="flex:1">${inputHTML(campo)}</div>
+      ${hasValidar ? `<button class="validar-btn" id="vbtn-${campo.id}"
+        onclick="validarCampo('${campo.id}')"
+        ${!val ? "disabled" : ""}>Validar IA</button>` : ""}
+    </div>
+    <div id="val-${campo.id}">${validationHTML(campo)}</div>
+  </div>`;
+}
+
+function renderPanel() {
+  const sec = SECCIONES[seccionActiva];
+  const campos = sec.nums.map(n => getCampo(n)).filter(Boolean);
+  const isLast = seccionActiva === SECCIONES.length - 1;
+  const isFirst = seccionActiva === 0;
+  document.getElementById("panel-campos").innerHTML = `
+    <div class="section-header">
+      <h2>${sec.titulo}</h2>
+      <p>${sec.desc} Los campos marcados como <strong>IA Valida</strong> pueden ser analizados automáticamente.</p>
+    </div>
+    ${campos.map(c => campoHTML(c)).join("")}
+    <div class="nav-actions">
+      <button class="nav-prev" onclick="navSec(-1)" ${isFirst ? "disabled" : ""}>← Anterior</button>
+      <button class="nav-next" onclick="navSec(1)" ${isLast ? "disabled" : ""}>Siguiente →</button>
+    </div>
+  `;
+}
+
+function render() {
+  renderNav();
+  renderPanel();
+  updateProgreso();
+}
+
+function handleChange(id, val) {
+  formData[id] = val;
+  const btn = document.getElementById("vbtn-" + id);
+  if (btn) btn.disabled = !val;
+  updateProgreso();
+  renderNav();
+}
+
+function navSec(dir) {
+  seccionActiva = Math.max(0, Math.min(SECCIONES.length - 1, seccionActiva + dir));
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function validarCampo(id) {
+  const campo = CAMPOS.find(c => c.id === id);
+  if (!campo || !campo.prompt) return;
+  const val = getValor(id);
+  if (!val) return;
+
+  validations[id] = { loading: true };
+  document.getElementById("val-" + id).innerHTML = validationHTML(campo);
+  document.getElementById("vbtn-" + id).disabled = true;
+  document.getElementById("vbtn-" + id).textContent = "...";
+
+  const contextoPrevio = CAMPOS
+    .filter(c => c.num < campo.num && getValor(c.id))
+    .map(c => `${c.label} (código ${c.num}): ${getValor(c.id)}`)
+    .join("\n");
+
+  const userMsg = `Contexto de la ficha:\n${contextoPrevio || "(sin datos previos)"}\n\n---\nCampo a validar — ${campo.label} (código ${campo.num}):\n"${val}"\n\nPor favor, valida este campo según tu rol.`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: campo.prompt,
+        messages: [{ role: "user", content: userMsg }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(b => b.text || "").join("") || "Sin respuesta.";
+    validations[id] = { loading: false, result: text };
+  } catch(e) {
+    validations[id] = { loading: false, result: "Error al conectar con la IA. Verifique su conexión e intente nuevamente." };
+  }
+
+  document.getElementById("val-" + id).innerHTML = validationHTML(campo);
+  const btn = document.getElementById("vbtn-" + id);
+  if (btn) { btn.disabled = false; btn.textContent = "Validar IA"; }
+}
+
+async function evaluarGlobal() {
+  const btn = document.getElementById("eval-global-btn");
+  btn.disabled = true;
+  btn.textContent = "Analizando...";
+
+  const panel = document.getElementById("global-eval-panel");
+  panel.innerHTML = `<div class="global-eval">
+    <h3>📊 Evaluación Global de la Ficha</h3>
+    <div class="global-eval-body"><span class="spinner">⏳</span> La IA está revisando toda la ficha...</div>
+  </div>`;
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  const resumen = CAMPOS
+    .filter(c => getValor(c.id))
+    .map(c => `${c.label} (código ${c.num}): ${getValor(c.id)}`)
+    .join("\n");
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1200,
+        system: `Actúa como un experto en monitoreo y evaluación del sector público peruano. 
+Revisa la ficha de indicador completa y emite:
+1) Una evaluación global de consistencia interna (coherencia entre todos los campos).
+2) Un porcentaje estimado de calidad de la ficha (0-100%).
+3) Las 3 principales fortalezas de la ficha.
+4) Las 3 principales debilidades o campos a mejorar.
+5) Una recomendación final concisa para fortalecer el indicador.
+Sé directo, técnico y constructivo.`,
+        messages: [{ role: "user", content: `Ficha del indicador a evaluar:\n\n${resumen}` }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.map(b => b.text || "").join("") || "Sin respuesta.";
+    panel.innerHTML = `<div class="global-eval">
+      <h3>📊 Evaluación Global de la Ficha</h3>
+      <div class="global-eval-body">${escapeHtml(text)}</div>
+    </div>`;
+  } catch(e) {
+    panel.innerHTML = `<div class="global-eval">
+      <h3>📊 Evaluación Global</h3>
+      <div class="global-eval-body">Error al conectar con la IA. Verifique su conexión e intente nuevamente.</div>
+    </div>`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = "📊 Evaluación Global";
+}
+
+// Init
+render();
+</script>
+</body>
+</html>
